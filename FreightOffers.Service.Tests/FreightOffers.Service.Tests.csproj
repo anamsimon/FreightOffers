@@ -15,8 +15,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\FreightOffers.ExternalService\FreightOffers.ExternalService.csproj" />
+    <ProjectReference Include="..\FreightOffers.IExternalService\FreightOffers.IExternalService.csproj" />
     <ProjectReference Include="..\FreightOffers.IService\FreightOffers.IService.csproj" />
-    <ProjectReference Include="..\FreightOffersAPI\FreightOffers.Api.csproj" />
+    <ProjectReference Include="..\FreightOffers.Model\FreightOffers.Model.csproj" />
+    <ProjectReference Include="..\FreightOffers.Service\FreightOffers.Service.csproj" />
     <ProjectReference Include="..\TestHelper\TestHelper.csproj" />
   </ItemGroup>
 

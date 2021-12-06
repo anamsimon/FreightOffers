@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FreightOffers.IExternalService
 {
-   public interface IExternalServices
+   public interface IExternalServiceCollection
     {
         IEnumerator<IExternalOfferService> GetServices();
     }

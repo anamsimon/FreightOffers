@@ -1,25 +1,23 @@
-﻿using FreightOffers.ExternalService.Services.Dhl;
-using FreightOffers.ExternalService.Services.FedEx;
-using FreightOffers.ExternalService.Services.Ups;
+﻿ 
 using FreightOffers.IExternalService;
 using System.Collections.Generic;
 using System.Net.Http;
 
 namespace FreightOffers.ExternalService
 {
-    public class ExternalServices : IExternalServices
+    public class ExternalServiceCollection : IExternalServiceCollection
     {
         private readonly IHttpClientFactory clientFactory;
-        public ExternalServices(IHttpClientFactory clientFactory)
+        public ExternalServiceCollection(IHttpClientFactory clientFactory)
         {
             this.clientFactory = clientFactory;
         }
         public IEnumerator<IExternalOfferService> GetServices()
         {
             return new List<IExternalOfferService>
-            { new ServiceDhl(clientFactory), 
-                new ServiceFedEx(clientFactory),
-                new ServiceUps(clientFactory)
+            { new Services.Dhl.ServiceDhl(clientFactory), 
+                new Services.FedEx.ServiceFedEx(clientFactory),
+                new Services.Ups.ServiceUps(clientFactory)
             }.GetEnumerator();
         }
     }

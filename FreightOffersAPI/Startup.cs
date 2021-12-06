@@ -37,7 +37,7 @@ namespace FreightOffers.Api
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "FreightOffersAPI", Version = "v1" });
             });
             services.AddSingleton<IFreightService, FreightService>();
-            services.AddSingleton<IExternalServices, ExternalServices>();
+            services.AddSingleton<IExternalServiceCollection, ExternalServiceCollection>();
             services.AddHttpClient();
         }
 

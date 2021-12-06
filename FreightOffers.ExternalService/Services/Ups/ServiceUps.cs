@@ -11,14 +11,11 @@ using AutoMapper;
 
 namespace FreightOffers.ExternalService.Services.Ups
 {
-    public class ServiceUps : IExternalOfferService
+    public class ServiceUps : BaseExternalService, IExternalOfferService
     {
-        private readonly HttpClient client;
-        private readonly Mapper mapper;
-        private readonly string url;
         public ServiceUps(IHttpClientFactory clientFactory)
+    : base(clientFactory)
         {
-            client = clientFactory.CreateClient();
             client.BaseAddress = new Uri("https://61adbe4fd228a9001703aefb.mockapi.io");
             url = string.Format("/api/v1/ups");
             mapper = new Mapper(new MapperConfiguration(cfg =>
@@ -30,38 +27,30 @@ namespace FreightOffers.ExternalService.Services.Ups
         }
         async Task<decimal> IExternalOfferService.GetOffers(Consignment consigment)
         {
-            ServiceUpsRequest request = MapTo(consigment);
-            ServiceUpsResponse result;
+            //ServiceUpsRequest request = Helper.MapTo<ServiceUpsRequest>(consigment, mapper);
+            //ServiceUpsResponse result;
 
-            var xml = new XmlSerializer(typeof(ServiceUpsRequest));
-            TextWriter writer = new StringWriter();
-            xml.Serialize(writer, request);
-            var data = new StringContent(writer.ToString(), Encoding.UTF8, "application/xml");
-            var response = await client.PostAsync(url, data);
-            if (response.IsSuccessStatusCode)
-            {
-                //var stringResponse = await response.Content.ReadAsStringAsync();
-                var stringResponse = "<ServiceUpsResponse><Quote>9.0</Quote></ServiceUpsResponse>";
-                result = MapFrom(stringResponse);
-            }
-            else
-            {
-                throw new HttpRequestException(response.ReasonPhrase);
-            }
+            //var data = Helper.XMLSerializer(request);
+            //var content = new StringContent(data, Encoding.UTF8, "application/xml");
+            //var response = await client.PostAsync(url, content);
+            //if (response.IsSuccessStatusCode)
+            //{
+            //    //var stringResponse = await response.Content.ReadAsStringAsync();
+            //    var stringResponse = "<ServiceUpsResponse><Quote>9.0</Quote></ServiceUpsResponse>";
+            //    result = Helper.XMLDeserializer<ServiceUpsResponse>(stringResponse);
+            //}
+            //else
+            //{
+            //    throw new HttpRequestException(response.ReasonPhrase);
+            //}
+
+            ServiceUpsResponse result = await Helper.ExternalCall<ServiceUpsRequest, ServiceUpsResponse>(
+             client, url, consigment, "xml", mapper, Helper.XMLSerializer, Helper.XMLDeserializer<ServiceUpsResponse>);
+
 
             return result.Quote;
         }
 
-        ServiceUpsRequest MapTo(Consignment consigment)
-        {
-            return mapper.Map<ServiceUpsRequest>(consigment);
-        }
 
-        static ServiceUpsResponse MapFrom(string stringResponse)
-        {
-            var reader = new StringReader(stringResponse);
-            var xmlD = new XmlSerializer(typeof(ServiceUpsResponse));
-            return (ServiceUpsResponse)xmlD.Deserialize(reader);
-        }
     }
 }

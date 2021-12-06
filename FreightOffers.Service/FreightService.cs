@@ -9,15 +9,15 @@ namespace FreightOffers.Service
 {
     public class FreightService : IFreightService
     {
-        private readonly IExternalServices _externalServices;
-        public FreightService(IExternalServices externalServices)
+        private readonly IExternalServiceCollection _externalServiceList;
+        public FreightService(IExternalServiceCollection externalServiceList)
         {
-            this._externalServices = externalServices;
+            this._externalServiceList = externalServiceList;
         }
         public decimal BestOffer(Consignment consignment)
         {
             var tasks = new List<Task<decimal>>();
-            var services = this._externalServices.GetServices();
+            var services = this._externalServiceList.GetServices();
             while (services.MoveNext())
             {
                 tasks.Add(services.Current.GetOffers(consignment));
@@ -39,7 +39,7 @@ namespace FreightOffers.Service
                 bestOffer = task.Status == TaskStatus.RanToCompletion
                 && (!bestOffer.HasValue || task.Result < bestOffer.Value) ? task.Result : bestOffer;
             });
-            return bestOffer.Value;
+            return bestOffer ?? 0;
         }
     }
 }
