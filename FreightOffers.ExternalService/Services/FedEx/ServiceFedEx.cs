@@ -11,11 +11,13 @@ namespace FreightOffers.ExternalService.Services.FedEx
 {
     public class ServiceFedEx : BaseExternalService, IExternalOfferService
     {
+        private const string baseUrl = "https://61adbe4fd228a9001703aefb.mockapi.io";
+        private const string endpoint = "/api/v1/fedex";
         public ServiceFedEx(IHttpClientFactory clientFactory)
             : base(clientFactory)
         {
-            client.BaseAddress = new Uri("https://61adbe4fd228a9001703aefb.mockapi.io");
-            url = string.Format("/api/v1/fedex");
+            client.BaseAddress = new Uri(baseUrl);
+            url = endpoint;
             mapper = new Mapper(new MapperConfiguration(cfg =>
                    cfg.CreateMap<Consignment, ServiceFedExRequest>()
                    .ForMember(dest => dest.Consignee, act => act.MapFrom(src => src.DestinationAddress))
@@ -25,20 +27,6 @@ namespace FreightOffers.ExternalService.Services.FedEx
         }
         async Task<decimal> IExternalOfferService.GetOffers(Consignment consigment)
         {
-            //ServiceFedExRequest request = Helper.MapTo<ServiceFedExRequest>(consigment, mapper);
-            //ServiceFedExResponse result;
-            //var data = Helper.JSONSerializer(request);
-            //var content = new StringContent(data, Encoding.UTF8, "application/json");
-            //var response = await client.PostAsync(url, content);
-            //if (response.IsSuccessStatusCode)
-            //{
-            //    var stringResponse = await response.Content.ReadAsStringAsync();
-            //    result = Helper.JSONDeserializer<ServiceFedExResponse>(stringResponse);
-            //}
-            //else
-            //{
-            //    throw new HttpRequestException(response.ReasonPhrase);
-            //}
 
             ServiceFedExResponse result = await Helper.ExternalCall<ServiceFedExRequest, ServiceFedExResponse>(
                client, url, consigment, "json", mapper, Helper.JSONSerializer, Helper.JSONDeserializer<ServiceFedExResponse>);
