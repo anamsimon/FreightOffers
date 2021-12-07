@@ -54,13 +54,13 @@ namespace FreightOffers.ExternalService.Services
 
         public static async Task<string> ExternalCall
             (ICustomHttpClient client, string url, string mediatype,
-            string data)
+            string data, string apiKey)
         {
             string mediaTypeName = string.Format("application/{0}", mediatype);
             string stringResponse;
             var content = new StringContent(data, Encoding.UTF8, mediaTypeName);
 
-            var response = await client.PostAsync(url, content, mediaTypeName);
+            var response = await client.PostAsync(url, content, mediaTypeName, apiKey);
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
                 stringResponse = await response.Content.ReadAsStringAsync();
@@ -77,7 +77,7 @@ namespace FreightOffers.ExternalService.Services
 
     public interface ICustomHttpClient
     {
-        Task<HttpResponseMessage> PostAsync(string url, HttpContent content, string mediaType);
+        Task<HttpResponseMessage> PostAsync(string url, HttpContent content, string mediaType, string apiKey);
     }
 
     public class CustomHttpClient : ICustomHttpClient
@@ -87,9 +87,10 @@ namespace FreightOffers.ExternalService.Services
         {
             _httpClient = new HttpClient();
         }
-        public async Task<HttpResponseMessage> PostAsync(string url, HttpContent content, string mediaType)
+        public async Task<HttpResponseMessage> PostAsync(string url, HttpContent content, string mediaType, string apiKey)
         {
             _httpClient.DefaultRequestHeaders.Add("Accept", mediaType);
+            _httpClient.DefaultRequestHeaders.Add("ApiKey", apiKey);            
             return await _httpClient.PostAsync(url, content);
         }
     }

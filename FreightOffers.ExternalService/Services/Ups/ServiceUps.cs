@@ -13,6 +13,7 @@ namespace FreightOffers.ExternalService.Services.Ups
 {
     public class ServiceUps : IExternalOfferService
     {
+        private const string apiKey = "ntM3fDheb4";
         private const string baseUrl = "https://localhost:44356";
         private const string endpoint = "/api/ups/offer";
         private protected Mapper mapper;
@@ -33,7 +34,7 @@ namespace FreightOffers.ExternalService.Services.Ups
             var request = Helper.MapTo<ServiceUpsRequest>(consignment, mapper);
             var data = Helper.XMLSerializer(request);
             string response = await Helper.ExternalCall(
-                new CustomHttpClient(), url, "xml", data);
+                new CustomHttpClient(), url, "xml", data, apiKey);
             var result = Helper.XMLDeserializer<ServiceUpsResponse>(response);
             return result.Quote;
 

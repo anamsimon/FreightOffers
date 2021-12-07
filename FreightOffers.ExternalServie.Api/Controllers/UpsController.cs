@@ -1,4 +1,5 @@
-﻿using FreightOffers.ExternalServie.Api.Model;
+﻿using FreightOffers.ExternalService.Api.Attributes;
+using FreightOffers.ExternalServie.Api.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.IO;
@@ -11,6 +12,7 @@ namespace FreightOffers.ExternalServie.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [ApiKey]
     public class UpsController : ControllerBase
     {
         [HttpPost]

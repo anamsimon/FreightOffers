@@ -11,6 +11,7 @@ namespace FreightOffers.ExternalService.Services.FedEx
 {
     public class ServiceFedEx : IExternalOfferService
     {
+        private const string apiKey = "M7a37AngWT";
         private const string baseUrl = "https://localhost:44356";
         private const string endpoint = "/api/ups/fedex";
         //private const string baseUrl = "https://61adbe4fd228a9001703aefb.mockapi.io";
@@ -35,7 +36,7 @@ namespace FreightOffers.ExternalService.Services.FedEx
             var request = Helper.MapTo<ServiceFedExRequest>(consignment, mapper);
             var data = Helper.JSONSerializer(request);
             string response = await Helper.ExternalCall(
-                new CustomHttpClient(), url, "json", data);
+                new CustomHttpClient(), url, "json", data, apiKey);
             var result = Helper.JSONDeserializer<ServiceFedExResponse>(response);
             return result.Amount;
 

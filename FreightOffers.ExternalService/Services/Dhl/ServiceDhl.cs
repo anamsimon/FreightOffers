@@ -11,6 +11,9 @@ namespace FreightOffers.ExternalService.Services.Dhl
 {
     public class ServiceDhl : IExternalOfferService
     {
+
+
+        private const string apiKey = "yk2BS9Xje9";
         private const string baseUrl = "https://localhost:44356";
         private const string endpoint = "/api/ups/dhl";
 
@@ -34,7 +37,7 @@ namespace FreightOffers.ExternalService.Services.Dhl
             var request = Helper.MapTo<ServiceDhlRequest>(consignment, mapper);
             var data = Helper.JSONSerializer(request);
             string response = await Helper.ExternalCall(
-                new CustomHttpClient(), url, "json", data);
+                new CustomHttpClient(), url, "json", data, apiKey);
             var result = Helper.JSONDeserializer<ServiceDhlResponse>(response);
             return result.Total;
         }
