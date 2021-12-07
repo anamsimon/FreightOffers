@@ -24,7 +24,9 @@ Each with its own url and credentials
     Output <xml><quote/></xml>
 
 ##### Implementation:
-Two APIs are developed. The main api, Freight Offers receives the source address, destination address and package dimensions from request and makes api calls to three external systems (FreightOffers ExternalService API) 
+There are two components in this project. 
+- The main api ( here FreightOffersApi) receives the source address, destination address and package dimensions from request. It then makes background api calls to three external systems (here FreightOffersExternalServiceAPI) API
+- The external apis receive request from the main api and respond the offer amount
 ###### Integration Diagram
 ![Integration Diagram](https://github.com/anamsimon/FreightOffers/blob/main/Integration%20Diagram.png?raw=true)
 ##### Tech
@@ -72,9 +74,22 @@ curl --location --request POST 'https://localhost:44371/api/Freight/BestOffer' \
 }'
 ```
 ###### The Response
-After receiving the request the main API will call other companies api in parallel and from their response it will pick lowest offer and return the amount as decimal as response
+After receiving the request the main API will call other companies api in parallel and from their response it will pick lowest offer and return the amount as decimal as response.
+Success Response 
 ```sh
 {
     "amount": 50
+}
+```
+Failure Response
+When input request is object is not valid
+```sh
+400 Bad Request
+request is incorrect
+```
+When all external api fails
+```sh
+{
+    "amount": 0
 }
 ```
