@@ -38,7 +38,7 @@ namespace FreightOffers.Api
             });
             services.AddSingleton<IFreightService, FreightService>();
             services.AddSingleton<IExternalServiceCollection, ExternalServiceCollection>();
-            services.AddHttpClient();
+          
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

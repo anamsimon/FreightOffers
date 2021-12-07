@@ -2,7 +2,7 @@
 
 namespace FreightOffers.ExternalService.Services.Dhl
 {
-    internal class ServiceDhlRequest
+    public class ServiceDhlRequest
     {
         public Address ContactAddress { get; set; }
         public Address WarehouseAddress { get; set; }

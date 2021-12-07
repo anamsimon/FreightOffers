@@ -9,15 +9,16 @@ using AutoMapper;
 
 namespace FreightOffers.ExternalService.Services.Dhl
 {
-    public class ServiceDhl : BaseExternalService, IExternalOfferService
+    public class ServiceDhl : IExternalOfferService
     {
         private const string baseUrl = "https://61adbe4fd228a9001703aefb.mockapi.io";
         private const string endpoint = "/api/v1/dhl";
-        public ServiceDhl(IHttpClientFactory clientFactory)
-           : base(clientFactory)
+        private protected Mapper mapper;
+        private protected string url;
+
+        public ServiceDhl()
         {
-            client.BaseAddress = new Uri(baseUrl);
-            url = endpoint;
+            url = string.Format("{0}{1}", baseUrl, endpoint);
             mapper = new Mapper(new MapperConfiguration(cfg =>
                    cfg.CreateMap<Consignment, ServiceDhlRequest>()
                    .ForMember(dest => dest.ContactAddress, act => act.MapFrom(src => src.DestinationAddress))
@@ -25,11 +26,13 @@ namespace FreightOffers.ExternalService.Services.Dhl
                    .ForMember(dest => dest.Dimensions, act => act.MapFrom(src => src.Packages))
                ));
         }
-        async Task<decimal> IExternalOfferService.GetOffers(Consignment consigment)
+        async Task<decimal> IExternalOfferService.GetOffers(Consignment consignment)
         {
-            ServiceDhlResponse result = await Helper.ExternalCall<ServiceDhlRequest, ServiceDhlResponse>(
-                client, url, consigment, "json", mapper, Helper.JSONSerializer, Helper.JSONDeserializer<ServiceDhlResponse>);
-
+            var request = Helper.MapTo<ServiceDhlRequest>(consignment, mapper);
+            var data = Helper.JSONSerializer(request);
+            string response = await Helper.ExternalCall(
+                new CustomHttpClient(), url, "json", data);
+            var result = Helper.JSONDeserializer<ServiceDhlResponse>(response);
             return result.Total;
         }
 

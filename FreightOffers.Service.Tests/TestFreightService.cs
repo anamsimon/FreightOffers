@@ -1,13 +1,9 @@
 using FreightOffers.IExternalService;
-using FreightOffers.IService;
 using FreightOffers.Model;
 using Moq;
 using NUnit.Framework;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using TestHelper;
-using FreightOffers.Model;
 using System.Threading.Tasks;
 
 namespace FreightOffers.Service.Tests
@@ -34,7 +30,7 @@ namespace FreightOffers.Service.Tests
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(100m, result);
-            Mock.Get(mockExternalServiceList.Object).Verify(x => x.GetServices(), Times.Once);
+            Mock.Get(mockExternalServiceList.Object).Verify(x => x.GetServices(),  Times.Once);
         }
 
         private static IEnumerator<IExternalOfferService> ServiceCollection(Consignment consignment)

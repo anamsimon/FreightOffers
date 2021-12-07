@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FreightOffers.ExternalService.Services.Dhl
 {
-    internal class ServiceDhlResponse
+    public class ServiceDhlResponse
     {
         public Decimal Total { get; set; }
     }

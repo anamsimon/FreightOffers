@@ -11,13 +11,13 @@ using System.Xml.Serialization;
 
 namespace FreightOffers.ExternalService.Services
 {
-    internal class Helper
+    public class Helper
     {
-        internal static string JSONSerializer<T>(T request)
+        public static string JSONSerializer<T>(T request)
         {
             return JsonSerializer.Serialize(request);
         }
-        internal static string XMLSerializer<T>(T request)
+        public static string XMLSerializer<T>(T request)
         {
             var xml = new XmlSerializer(typeof(T));
             TextWriter writer = new StringWriter();
@@ -25,45 +25,60 @@ namespace FreightOffers.ExternalService.Services
             return writer.ToString();
         }
 
-        internal static T JSONDeserializer<T>(string response)
+        public static T JSONDeserializer<T>(string response)
         {
             return JsonSerializer.Deserialize<T>(response,
                          new JsonSerializerOptions() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
         }
-        internal static T XMLDeserializer<T>(string response)
+        public static T XMLDeserializer<T>(string response)
         {
             var reader = new StringReader(response);
             var xmlD = new XmlSerializer(typeof(T));
             return (T)xmlD.Deserialize(reader);
         }
-        internal static T MapTo<T>(object consigment, Mapper mapper)
+        public static T MapTo<T>(object consigment, Mapper mapper)
         {
             return mapper.Map<T>(consigment);
         }
 
-        internal static async Task<T1> ExternalCall<T, T1>
-            (HttpClient client, string url, object consigment, string mediatype,
-            Mapper mapper, Func<T, string> serializer, Func<string, T1> deserializer)
-        {
-            T request = MapTo<T>(consigment, mapper);
-            T1 result;
-
-            var data = serializer(request);
+        public static async Task<string> ExternalCall
+            (ICustomHttpClient client, string url, string mediatype,
+            string data)
+        {            
+            string stringResponse;
             var content = new StringContent(data, Encoding.UTF8,
                 string.Format("application/{0}", mediatype));
+            
             var response = await client.PostAsync(url, content);
-            if (response.IsSuccessStatusCode)
+            if (response.StatusCode == System.Net.HttpStatusCode.Created)
             {
-                var stringResponse = await response.Content.ReadAsStringAsync();
-                result = deserializer(stringResponse);
+                stringResponse = await response.Content.ReadAsStringAsync();
             }
             else
             {
                 throw new HttpRequestException(response.ReasonPhrase);
             }
 
-            return result;
+            return stringResponse;
 
+        }
+    }
+
+    public interface ICustomHttpClient
+    {
+        Task<HttpResponseMessage> PostAsync(string url, HttpContent content);
+    }
+
+    public class CustomHttpClient : ICustomHttpClient
+    {
+        private readonly HttpClient _httpClient;
+        public CustomHttpClient()
+        {
+            _httpClient = new HttpClient();
+        }
+        public async Task<HttpResponseMessage> PostAsync(string url, HttpContent content)
+        {
+          return await _httpClient.PostAsync(url, content);
         }
     }
 }
