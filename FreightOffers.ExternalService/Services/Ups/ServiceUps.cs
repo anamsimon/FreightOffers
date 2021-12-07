@@ -13,14 +13,18 @@ namespace FreightOffers.ExternalService.Services.Ups
 {
     public class ServiceUps : IExternalOfferService
     {
-        private const string apiKey = "ntM3fDheb4";
-        private const string baseUrl = "https://localhost:44356";
-        private const string endpoint = "/api/ups/offer";
+        private readonly string apiKey;
+        private readonly string baseUrl;
+        private readonly string endpoint;
         private protected Mapper mapper;
         private protected string url;
 
         public ServiceUps()
         {
+            var config = new ExternalServiceConfig();
+            apiKey = config.GetValue("ExternalService:Ups:ApiKey");
+            baseUrl = config.GetValue("ExternalService:Ups:BaseUrl");
+            endpoint = config.GetValue("ExternalService:Ups:Endpoint");
             url = string.Format("{0}{1}", baseUrl, endpoint);
             mapper = new Mapper(new MapperConfiguration(cfg =>
                    cfg.CreateMap<Consignment, ServiceUpsRequest>()

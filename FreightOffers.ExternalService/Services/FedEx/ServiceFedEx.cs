@@ -11,18 +11,21 @@ namespace FreightOffers.ExternalService.Services.FedEx
 {
     public class ServiceFedEx : IExternalOfferService
     {
-        private const string apiKey = "M7a37AngWT";
-        private const string baseUrl = "https://localhost:44356";
-        private const string endpoint = "/api/ups/fedex";
-        //private const string baseUrl = "https://61adbe4fd228a9001703aefb.mockapi.io";
-        //private const string endpoint = "/api/v1/fedex";
+
+        private readonly string apiKey;
+        private readonly string baseUrl;
+        private readonly string endpoint;
+
         private protected Mapper mapper;
         private protected string url;
 
 
-        public ServiceFedEx()
-            
+        public ServiceFedEx()            
         {
+            var config = new ExternalServiceConfig();
+            apiKey = config.GetValue("ExternalService:FedEx:ApiKey");
+            baseUrl = config.GetValue("ExternalService:FedEx:BaseUrl");
+            endpoint = config.GetValue("ExternalService:FedEx:Endpoint");
             url = string.Format("{0}{1}", baseUrl, endpoint);
             mapper = new Mapper(new MapperConfiguration(cfg =>
                    cfg.CreateMap<Consignment, ServiceFedExRequest>()
@@ -41,9 +44,6 @@ namespace FreightOffers.ExternalService.Services.FedEx
             return result.Amount;
 
         }
-
-
-
 
     }
 }

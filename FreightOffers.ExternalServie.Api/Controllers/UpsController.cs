@@ -20,7 +20,7 @@ namespace FreightOffers.ExternalServie.Api.Controllers
         [Consumes(MediaTypeNames.Application.Xml)]
         public ServiceUpsResponse Post(ServiceUpsRequest requestBody)
         {
-            var result = new ServiceUpsResponse { Quote = 30m };
+            var result = new ServiceUpsResponse { Quote = 300m };
             return result;
         }
 

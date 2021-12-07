@@ -5,32 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="ExternalServiceCollection.cs" />
-    <Compile Remove="Services\ExternalServiceConfig.cs" />
-    <Compile Remove="Services\Helper.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="Services\externalservicesettings.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ApplicationDefinition Include="Services\ExternalServiceConfig.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="ExternalServiceCollection.cs">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Resource Include="Services\Helper.cs">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-  </ItemGroup>
-
-  <ItemGroup>
     <Resource Include="Services\externalservicesettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
@@ -50,6 +24,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FreightOffers.IExternalService\FreightOffers.IExternalService.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Services\externalservicesettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

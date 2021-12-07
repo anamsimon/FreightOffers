@@ -14,7 +14,7 @@ namespace FreightOffers.ExternalService.Services
         {
             _config = new ConfigurationBuilder()
                 .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-                .AddJsonFile("externalservicesettings.json").Build();
+                .AddJsonFile("services/externalservicesettings.json").Build();
 
         }
 
