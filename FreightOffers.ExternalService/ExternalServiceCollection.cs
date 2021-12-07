@@ -12,8 +12,8 @@ namespace FreightOffers.ExternalService
         {
             return new List<IExternalOfferService>
             { 
-                //new Services.Dhl.ServiceDhl(), 
-                //new Services.FedEx.ServiceFedEx(),
+                new Services.Dhl.ServiceDhl(), 
+                new Services.FedEx.ServiceFedEx(),
                 new Services.Ups.ServiceUps()
             }.GetEnumerator();
         }
