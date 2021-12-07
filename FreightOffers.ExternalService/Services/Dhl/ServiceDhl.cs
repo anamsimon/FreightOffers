@@ -31,6 +31,8 @@ namespace FreightOffers.ExternalService.Services.Dhl
                    .ForMember(dest => dest.WarehouseAddress, act => act.MapFrom(src => src.SourceAddress))
                    .ForMember(dest => dest.Dimensions, act => act.MapFrom(src => src.Packages))
                ));
+            var config = new ExternalServiceConfig();
+            var apiKey = config.GetValue("ExternalService:Dhl:ApiKey");
         }
         async Task<decimal> IExternalOfferService.GetOffers(Consignment consignment)
         {

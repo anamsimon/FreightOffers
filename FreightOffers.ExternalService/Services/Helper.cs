@@ -73,6 +73,7 @@ namespace FreightOffers.ExternalService.Services
             return stringResponse;
 
         }
+
     }
 
     public interface ICustomHttpClient
@@ -90,7 +91,7 @@ namespace FreightOffers.ExternalService.Services
         public async Task<HttpResponseMessage> PostAsync(string url, HttpContent content, string mediaType, string apiKey)
         {
             _httpClient.DefaultRequestHeaders.Add("Accept", mediaType);
-            _httpClient.DefaultRequestHeaders.Add("ApiKey", apiKey);            
+            _httpClient.DefaultRequestHeaders.Add("ApiKey", apiKey);
             return await _httpClient.PostAsync(url, content);
         }
     }
