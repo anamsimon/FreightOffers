@@ -23,6 +23,10 @@ namespace FreightOffers.Api.Controllers
                 return BadRequest("request is incorrect");
 
             var result = this._freightService.BestOffer(consignment);
+
+            if (result == 0)
+                return new StatusCodeResult(Microsoft.AspNetCore.Http.StatusCodes.Status500InternalServerError);
+
             return Ok(new Offer() { Amount = result });
         }
 

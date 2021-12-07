@@ -89,7 +89,5 @@ request is incorrect
 ```
 When all external api fails
 ```sh
-{
-    "amount": 0
-}
+500 Internal Server Error
 ```
