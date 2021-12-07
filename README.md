@@ -35,8 +35,8 @@ There are two components in this project.
 * NUnit
 ##### How to Run 
 ###### Run the APIs from Visual Studio
-Main API - Run the project FreightOffers.Api using IISExpress at port 44371
-Other Companies API - Run the project FreightOffers.ExternalService.Api using IISExpress at port 44356
+*Main API - Run the project FreightOffers.Api using IISExpress at port 44371
+*Other Companies API - Run the project FreightOffers.ExternalService.Api using IISExpress at port 44356
 ###### Consume the main API
 Use following curl to consume
 ```sh
