@@ -13,6 +13,6 @@ namespace FreightOffers.ExternalService.Tests
 {
     public class TestingHelper
     {
-       
+        
     }
 }

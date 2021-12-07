@@ -11,8 +11,11 @@ namespace FreightOffers.ExternalService.Services.Dhl
 {
     public class ServiceDhl : IExternalOfferService
     {
-        private const string baseUrl = "https://61adbe4fd228a9001703aefb.mockapi.io";
-        private const string endpoint = "/api/v1/dhl";
+        private const string baseUrl = "https://localhost:44356";
+        private const string endpoint = "/api/ups/dhl";
+
+        //private const string baseUrl = "https://61adbe4fd228a9001703aefb.mockapi.io";
+        //private const string endpoint = "/api/v1/dhl";
         private protected Mapper mapper;
         private protected string url;
 

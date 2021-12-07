@@ -13,8 +13,8 @@ namespace FreightOffers.ExternalService.Services.Ups
 {
     public class ServiceUps : IExternalOfferService
     {
-        private const string baseUrl = "https://61adbe4fd228a9001703aefb.mockapi.io";
-        private const string endpoint = "/api/v1/ups";
+        private const string baseUrl = "https://localhost:44356";
+        private const string endpoint = "/api/ups/offer";
         private protected Mapper mapper;
         private protected string url;
 

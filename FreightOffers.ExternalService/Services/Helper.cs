@@ -20,9 +20,20 @@ namespace FreightOffers.ExternalService.Services
         public static string XMLSerializer<T>(T request)
         {
             var xml = new XmlSerializer(typeof(T));
-            TextWriter writer = new StringWriter();
-            xml.Serialize(writer, request);
-            return writer.ToString();
+            string result = string.Empty;
+
+            using (var writer = new Utf8StringWriter())
+            {
+                xml.Serialize(writer, request);
+
+                result = writer.ToString();
+            }
+            return result;
+        }
+
+        public class Utf8StringWriter : StringWriter
+        {
+            public override Encoding Encoding => Encoding.UTF8;
         }
 
         public static T JSONDeserializer<T>(string response)
@@ -44,13 +55,13 @@ namespace FreightOffers.ExternalService.Services
         public static async Task<string> ExternalCall
             (ICustomHttpClient client, string url, string mediatype,
             string data)
-        {            
+        {
+            string mediaTypeName = string.Format("application/{0}", mediatype);
             string stringResponse;
-            var content = new StringContent(data, Encoding.UTF8,
-                string.Format("application/{0}", mediatype));
-            
-            var response = await client.PostAsync(url, content);
-            if (response.StatusCode == System.Net.HttpStatusCode.Created)
+            var content = new StringContent(data, Encoding.UTF8, mediaTypeName);
+
+            var response = await client.PostAsync(url, content, mediaTypeName);
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
                 stringResponse = await response.Content.ReadAsStringAsync();
             }
@@ -66,7 +77,7 @@ namespace FreightOffers.ExternalService.Services
 
     public interface ICustomHttpClient
     {
-        Task<HttpResponseMessage> PostAsync(string url, HttpContent content);
+        Task<HttpResponseMessage> PostAsync(string url, HttpContent content, string mediaType);
     }
 
     public class CustomHttpClient : ICustomHttpClient
@@ -76,9 +87,10 @@ namespace FreightOffers.ExternalService.Services
         {
             _httpClient = new HttpClient();
         }
-        public async Task<HttpResponseMessage> PostAsync(string url, HttpContent content)
+        public async Task<HttpResponseMessage> PostAsync(string url, HttpContent content, string mediaType)
         {
-          return await _httpClient.PostAsync(url, content);
+            _httpClient.DefaultRequestHeaders.Add("Accept", mediaType);
+            return await _httpClient.PostAsync(url, content);
         }
     }
 }
