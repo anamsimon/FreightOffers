@@ -17,12 +17,12 @@ namespace FreightOffers.Api.Controllers
 
         [HttpPost]
         [Route("BestOffer")]
-        public decimal BestOffer([FromBody] Consignment consignment)
+        public Offer BestOffer([FromBody] Consignment consignment)
         {
             if (!consignment.IsValid())
                 throw new ArgumentException("Invalid Input");
             var result = this._freightService.BestOffer(consignment);
-            return result;
+            return new Offer() { Amount = result };
         }
 
     }

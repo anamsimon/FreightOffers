@@ -27,7 +27,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestHelper", "TestHelper\Te
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FreightOffers.ExternalService.Tests", "FreightOffers.ExternalService.Tests\FreightOffers.ExternalService.Tests.csproj", "{EDBD2FAC-B143-4F57-A285-54FF655E9985}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FreightOffers.ExternalService.Api", "FreightOffers.ExternalServie.Api\FreightOffers.ExternalService.Api.csproj", "{C80379E2-988F-4E0A-8ECB-3412BB28AF04}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FreightOffers.ExternalService.Api", "FreightOffers.ExternalServie.Api\FreightOffers.ExternalService.Api.csproj", "{C80379E2-988F-4E0A-8ECB-3412BB28AF04}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
